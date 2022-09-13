@@ -1,0 +1,43 @@
+name: 'GitLabPackageManager'
+description: 'Publish and Download artifacts from GitLab'
+branding:
+  icon: 'package'  
+  color: 'purple'
+inputs:
+  requestType: 
+    description: 'Type of action to perform. Possible Values: publish , download , query'
+    required: true
+    default: 'query'
+  repositoryURL:
+    description: 'The URL of the GitLab repository'
+    required: true
+  credentialsType:
+    description: 'The type of credentials to use. Possible Values: PAT (for perosnal/project/group tokens), OAUTH (for OAUTH token)'
+    required: true
+    default: 'PAT'
+  credentials:
+    description: 'The access credentials'
+    required: true
+  localFilePath:
+    description: 'The path of the file to upload'
+    required: false
+  remoteFilePath:
+    description: 'The path suffix to upload or download the file from'
+    required: true
+outputs:
+  actionResults: 
+    description: 'The result of requested operation'
+    value: ''
+  resultInformation:
+    description: 'The content of the result status. For downloads - the file path, for uploads and query- the result.'
+    value: ''
+runs:
+  using: 'composite'
+  steps:
+    - name: 'Download Test File'
+      run: curl -X GET "https://speedtest-ny.turnkeyinternet.net/100mb.bin" -o /tmp/100mb.bin && ls /tmp
+      shell: bash
+      #if: ${{ github.event_name == 'pull_request' && github.event.action == 'unassigned' }}
+
+
+
